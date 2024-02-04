@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import './App.css';
 
 function App() {
@@ -6,6 +6,7 @@ function App() {
   const [numAllowed, setNumAllowed] = useState(false);
   const [charAllowed, setCharAllowed] = useState(false);
   const [password, setPassword] = useState('');
+  const passwordRef = useRef(null);
 
   const passwordGenerator = useCallback(() => {
     let pass = '';
@@ -22,50 +23,56 @@ function App() {
     setPassword(pass);
   }, [length, numAllowed, charAllowed]);
 
+  const copyToClipboard = () => {
+    if (passwordRef.current) {
+      passwordRef.current.select();
+      document.execCommand('copy');
+    }
+  };
 
-
-
-
-      
   return (
     <div className='w-full max-w-md mx-auto shadow-md rounded-lg px-4 my-8 text-orange-500 bg-gray-400'>
-    <label>
-      Password Length:
-      <input
-        type='number'
-        value={length}
-        onChange={(e) => setLength(e.target.value)}
-      />
-    </label>
-    <br />
-    <label>
-      Include Numbers:
-      <input
-        type='checkbox'
-        checked={numAllowed}
-        onChange={() => setNumAllowed(!numAllowed)}
-      />
-    </label>
-    <br />
-    <label>
-      Include Special Characters:
-      <input
-        type='checkbox'
-        checked={charAllowed}
-        onChange={() => setCharAllowed(!charAllowed)}
-      />
-    </label>
-    <br />
-    <button onClick={passwordGenerator}>Generate Password</button>
-    <br />
-    <button>
-      Copy
-    </button>
-    <div>
-      <strong>Generated Password:</strong> {password}
+      <label>
+        Password Length:
+        <input
+          type='number'
+          value={length}
+          onChange={(e) => setLength(e.target.value)}
+        />
+      </label>
+      <br />
+      <label>
+        Include Numbers:
+        <input
+          type='checkbox'
+          checked={numAllowed}
+          onChange={() => setNumAllowed(!numAllowed)}
+        />
+      </label>
+      <br />
+      <label>
+        Include Special Characters:
+        <input
+          type='checkbox'
+          checked={charAllowed}
+          onChange={() => setCharAllowed(!charAllowed)}
+        />
+      </label>
+      <br />
+      <button onClick={passwordGenerator}>Generate Password</button>
+      <button onClick={copyToClipboard}>Copy to Clipboard</button>
+      <br />
+      <div>
+        <strong>Generated Password:</strong>{' '}
+        <input
+          type='text'
+          value={password}
+          ref={passwordRef}
+          readOnly
+        />
+      </div>
     </div>
-  </div>
-);
+  );
 }
 
 export default App;
