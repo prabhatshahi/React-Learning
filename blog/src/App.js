@@ -1,8 +1,15 @@
 import logo from "./logo.svg";
 import "./App.css";
+import Users from "./Users";
+import React, { Component } from "react";
 
 function App() {
-  return <h1>react Learning</h1>;
+  return (
+    <div>
+      <h1>React Learning</h1>;
+      <Users />;
+    </div>
+  );
 }
 
 export default App;
